@@ -1,17 +1,21 @@
 <template>
-  <div id="app">
-    <!-- <img src="./assets/subway_shot.jpg"> -->
-    <hr>
-    <router-view></router-view>
+  <div id="home">
+    <h3>Color Picker Page</h3>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app',
   data () {
     return {
+      colorService: '0x1234',
+      colorWriteCharacteristic: '0x002',
+      jacket: {},
+      colorWriteCharRef: 'nothing'
     }
+  },
+  methods: {
+
   }
 }
 </script>

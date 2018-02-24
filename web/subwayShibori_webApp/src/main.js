@@ -2,13 +2,19 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
 import Home from './Home.vue'
+import ColorPicker from './ColorPicker.vue'
 
 Vue.use(VueRouter);
 
 const routes = [{
-  path: '/',
-  component: Home
-}];
+    path: '/',
+    component: Home
+  },
+  {
+    path: '/color_customization',
+    component: ColorPicker
+  }
+];
 
 const router = new VueRouter({
   routes: routes,

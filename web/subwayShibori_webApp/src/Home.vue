@@ -11,14 +11,43 @@ export default {
     return {
       colorService: '0x1234',
       colorWriteCharacteristic: '0x002',
-      jacket: {}
+      jacket: {},
+      colorWriteCharRef: 'nothing'
     }
   },
   methods: {
     connect: function() {
       console.log('connecting to jacket');
 
-
+      navigator.bluetooth.requestDevice({
+        filters: [{
+          services: ['0x1234']
+        }],
+        optionalServices: [
+          'gps-service',
+          'speed-service',
+          'data-logging-service'
+        ]
+      })
+      .then(device => {
+        console.log("device name is: "  + device.name);
+        this.jacket = device;
+        this.jacket.addEventListener('gattserverdisconnected', this.disconnected);
+      })
+      .then(server => {
+        return server.getPrimaryService(colorService);
+      })
+      .then(service => {
+        return service.getCharacteristic('colorWriteCharacteristic');
+      })
+      .then(characteristic => {
+        this.colorWriteCharRef = characteristic;
+        console.log('grabbed color write char from bluetooth connect');
+      })
+      .catch(error => {
+        console.log('Error in connecting: ', error);
+      })
+      this.$router.push('color_customization');
     }
   }
 }
