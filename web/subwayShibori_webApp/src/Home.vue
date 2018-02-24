@@ -1,16 +1,24 @@
 <template>
-  <div id="app">
-    <img src="./assets/subway_shot.png">
-    <hr>
-    <router-view></router-view>
+  <div id="home">
+    <h1>Subway Shibori</h1>
+    <button v-on:click='connect'>connect</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app',
   data () {
     return {
+      colorService: '0x1234',
+      colorWriteCharacteristic: '0x002',
+      jacket: {}
+    }
+  },
+  methods: {
+    connect: function() {
+      console.log('connecting to jacket');
+
+
     }
   }
 }
