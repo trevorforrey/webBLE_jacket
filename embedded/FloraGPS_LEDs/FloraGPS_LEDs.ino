@@ -121,10 +121,7 @@ void loop() // run over and over again
 
   ///////////////////////// Write to next LED /////////////////////////
   // Delay writing to next color based on current speed (high speed = low delay)
-<<<<<<< HEAD
-=======
   // instead of delaying the whole execution, I could create a counting variable that kept increasing on every cycle, and once it hit a certain point
   // high point for slow, low point for fast, it would write to the next led
->>>>>>> some scaffolding comments
 
 }
