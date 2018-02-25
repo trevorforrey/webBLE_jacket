@@ -1,22 +1,5 @@
-// Test code for Ultimate GPS Using Hardware Serial (e.g. GPS Flora or FeatherWing)
-//
-// This code shows how to listen to the GPS module via polling. Best used with
-// Feathers or Flora where you have hardware Serial and no interrupt
-//
-// Tested and works great with the Adafruit GPS FeatherWing
-// ------> https://www.adafruit.com/products/3133
-// or Flora GPS
-// ------> https://www.adafruit.com/products/1059
-// but also works with the shield, breakout
-// ------> https://www.adafruit.com/products/1272
-// ------> https://www.adafruit.com/products/746
-// 
-// Pick one up today at the Adafruit electronics shop
-// and help support open source hardware & software! -ada
-     
 #include <Adafruit_GPS.h>
 
-// what's the name of the hardware serial port?
 #define GPSSerial Serial1
 
 // Connect to the GPS on the hardware port
@@ -31,6 +14,8 @@ uint32_t timer = millis();
 
 void setup()
 {
+  ///////////////////////// GPS SETUP /////////////////////////
+  
   //while (!Serial);  // uncomment to have the sketch wait until Serial is ready
   
   // connect at 115200 so we can read the GPS fast enough and echo without dropping chars
@@ -58,10 +43,39 @@ void setup()
   
   // Ask for firmware version
   GPSSerial.println(PMTK_Q_RELEASE);
+
+
+  ///////////////////////// LED NEOPIXEL SETUP /////////////////////////
+
+
+
+
+
+
+
+  ///////////////////////// I2C w/ Ble Feather SETUP /////////////////////////
+
+
+
+
+  ///////////////////////// Main Variable SETUP /////////////////////////
+  //color of leds
+  //last pixel written to
+
 }
 
 void loop() // run over and over again
 {
+  ///////////////////////// Get New Color (if new color set) from BLE Feather /////////////////////////
+
+
+
+
+
+  
+  ///////////////////////// Get GPS Data (location, speed) /////////////////////////
+  // if gps fix is lost, use last speed used
+  
   // read data from the GPS in the 'main loop'
   char c = GPS.read();
   // if you want to debug, this is a good time to do it!
@@ -104,4 +118,8 @@ void loop() // run over and over again
       Serial.print("Satellites: "); Serial.println((int)GPS.satellites);
     }
   }
+
+  ///////////////////////// Write to next LED /////////////////////////
+  // Delay writing to next color based on current speed (high speed = low delay)
+
 }
