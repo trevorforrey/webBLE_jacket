@@ -141,7 +141,6 @@ void setup(void)
   Serial.println();
 }
 
-/** Send randomized heart rate data continuously **/
 void loop(void)
 {
   /* Wait for new data to arrive */

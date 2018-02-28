@@ -79,6 +79,7 @@ uint8_t readPacket(Adafruit_BLE *ble, uint16_t timeout)
 
   memset(packetbuffer, 0, READ_BUFSIZE);
 
+  // will need to customize what types of packets I'm looking for
   while (timeout--) {
     if (replyidx >= 20) break;
     if ((packetbuffer[1] == 'A') && (replyidx == PACKET_ACC_LEN))
