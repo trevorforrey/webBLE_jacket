@@ -13,6 +13,7 @@
 
 <script>
 export default {
+  import {eventBus} from './main.js';
   data () {
     return {
       colorService: '0x1234',
@@ -25,7 +26,18 @@ export default {
   methods: {
     sendColor: function() {
       console.log('sending color to ble feather');
+      let colorPacket = new Uint8Array(6);
+      colorPacket[0] = "!";
+      colorPacket[1] = "C";
+      colorPacket[2] = "try later";
+      return;
     }
+  },
+  mounted: {
+    eventBus.$on('writeCharRef', (characteristic) => {
+      console.log('got write characteristic (color picker)');
+      this.colorWriteCharRef = characteristic;
+    });
   }
 }
 </script>

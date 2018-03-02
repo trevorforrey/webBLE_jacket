@@ -6,6 +6,8 @@ import ColorPicker from './ColorPicker.vue'
 
 Vue.use(VueRouter);
 
+export const eventBus = new Vue();
+
 const routes = [{
     path: '/',
     component: Home
