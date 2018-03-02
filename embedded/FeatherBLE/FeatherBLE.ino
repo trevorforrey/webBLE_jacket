@@ -153,9 +153,9 @@ void loop(void)
   printHex(packetbuffer, len);
 
   for (int i = 0; i < len; i++) {
-    uint8_t packetIndex = packetbuffer[i];
-    Serial.print("Packet: " + i);
-    Serial.print(packetIndex);
+    Serial.print(i + ": ");
+    Serial.print(packetbuffer[i]);
+    Serial.print("\n");  
   }
 
   /* Delay before next measurement update */

@@ -32,7 +32,8 @@ uint8_t packetbuffer[READ_BUFSIZE+1];
 /**************************************************************************/
 float parsefloat(uint8_t *buffer) 
 {
-  float f = ((float *)buffer)[0];
+  float f;
+  memcpy(&f, buffer, 4);
   return f;
 }
 
@@ -79,7 +80,6 @@ uint8_t readPacket(Adafruit_BLE *ble, uint16_t timeout)
 
   memset(packetbuffer, 0, READ_BUFSIZE);
 
-  // will need to customize what types of packets I'm looking for
   while (timeout--) {
     if (replyidx >= 20) break;
     if ((packetbuffer[1] == 'A') && (replyidx == PACKET_ACC_LEN))
@@ -99,6 +99,7 @@ uint8_t readPacket(Adafruit_BLE *ble, uint16_t timeout)
 
     while (ble->available()) {
       char c =  ble->read();
+      Serial.print(c);
       if (c == '!') {
         replyidx = 0;
       }
@@ -106,6 +107,7 @@ uint8_t readPacket(Adafruit_BLE *ble, uint16_t timeout)
       replyidx++;
       timeout = origtimeout;
     }
+    Serial.print("\n");
     
     if (timeout == 0) break;
     delay(1);
