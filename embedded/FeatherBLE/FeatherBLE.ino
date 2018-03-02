@@ -153,10 +153,57 @@ void loop(void)
   printHex(packetbuffer, len);
 
   for (int i = 0; i < len; i++) {
-    Serial.print(i + ": ");
     Serial.print(packetbuffer[i]);
-    Serial.print("\n");  
   }
+
+  // Color
+  if (packetbuffer[1] == 'C') {
+    uint8_t red = packetbuffer[2];
+    uint8_t green = packetbuffer[3];
+    uint8_t blue = packetbuffer[4];
+    Serial.print ("RGB #");
+    if (red < 0x10) Serial.print("0");
+    Serial.print(red, HEX);
+    if (green < 0x10) Serial.print("0");
+    Serial.print(green, HEX);
+    if (blue < 0x10) Serial.print("0");
+    Serial.println(blue, HEX);
+  }  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
   /* Delay before next measurement update */
   delay(1000);
