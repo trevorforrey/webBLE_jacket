@@ -24,6 +24,15 @@ Adafruit_NeoPixel onboardled = Adafruit_NeoPixel(1, ONBOARDLED, NEO_GRB + NEO_KH
 
 uint32_t timer = millis();
 
+/* Defining struct for receiving color data from Feather */
+struct colorData {
+  int red;
+  int green;
+  int blue;  
+};
+typedef struct colorData ColorData;
+ColorData colori2cPacket; // declare one ColorData struct
+
 ///////////////////////// Main Variable SETUP /////////////////////////
   //color of leds
   int red = 0;
@@ -78,9 +87,13 @@ void setup()
 }
 
 void updateColor(int bytes) {
-  int i2cmessage = Wire.read();
-  Serial.print("From i2c: ");
-  Serial.println(i2cmessage);  
+  colori2cPacket = Wire.read();
+  Serial.print("red: "); 
+  Serial.println(colori2cPacket.red); 
+  Serial.print("green: "); 
+  Serial.println(colori2cPacket.green); 
+  Serial.print("blue: "); 
+  Serial.println(colori2cPacket.blue); 
 }
 
 void loop() // run over and over again

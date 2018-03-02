@@ -51,6 +51,16 @@ extern uint8_t packetbuffer[];
 
 int32_t colorServiceId;
 int32_t colorCharId;
+
+/* Defining struct for sending color data to Flora */
+struct colorData {
+  uint8_t red;
+  uint8_t green;
+  uint8_t blue;  
+};
+typedef struct colorData ColorData;
+ColorData colori2cPacket; // declare one ColorData struct
+
 /**************************************************************************/
 /*!
     @brief  Sets up the HW an the BLE module (this function is called
@@ -172,12 +182,27 @@ void loop(void)
     Serial.print(green, HEX);
     if (blue < 0x10) Serial.print("0");
     Serial.println(blue, HEX);
+//    Serial.print("about to send: ");
+//    Serial.println(red);
+//    Wire.beginTransmission(9); // begin transmit on address 9
+//    Wire.write(red);
+//    Wire.endTransmission();
+//    Serial.print("sent: " + red);
+
+    colori2cPacket.red = red;
+    colori2cPacket.green = green;
+    colori2cPacket.blue = blue;
+
     Serial.print("about to send: ");
-    Serial.println(red);
+    Serial.println(colori2cPacket.red);
+    Serial.println(colori2cPacket.green);
+    Serial.println(colori2cPacket.blue);
+    Serial.print("of size: ");
+    Serial.println(sizeof(ColorData));
     Wire.beginTransmission(9); // begin transmit on address 9
-    Wire.write(red);
+    Wire.write(colori2cPacket,sizeof(ColorData));
     Wire.endTransmission();
-    Serial.print("sent: " + red);
+    Serial.print("sent: " + colori2cPacket);
   }  
 
 
