@@ -1,3 +1,8 @@
+#include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+  #include <avr/power.h>
+#endif
+
 #include <Adafruit_GPS.h>
 
 #define GPSSerial Serial1
@@ -9,8 +14,21 @@ Adafruit_GPS GPS(&GPSSerial);
 // Set to 'true' if you want to debug and listen to the raw GPS sentences
 #define GPSECHO false
 
+// Neopixel Defines
+#define NEOPIN  6
+#define NUMPIXELS 2 
+
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, NEOPIN, NEO_GRB + NEO_KHZ800);
+
 uint32_t timer = millis();
 
+///////////////////////// Main Variable SETUP /////////////////////////
+  //color of leds
+  int red = 0;
+  int blue = 0;
+  int green = 50;
+  //last pixel written to
+  int lastPixel = 0;
 
 void setup()
 {
@@ -46,21 +64,11 @@ void setup()
 
 
   ///////////////////////// LED NEOPIXEL SETUP /////////////////////////
+  pixels.begin(); // inits neopixel library
 
 
+  ///////////////////////// I2C or USB w/ Ble Feather SETUP /////////////////////////
 
-
-
-
-
-  ///////////////////////// I2C w/ Ble Feather SETUP /////////////////////////
-
-
-
-
-  ///////////////////////// Main Variable SETUP /////////////////////////
-  //color of leds
-  //last pixel written to
 
 }
 
@@ -123,5 +131,9 @@ void loop() // run over and over again
   // Delay writing to next color based on current speed (high speed = low delay)
   // instead of delaying the whole execution, I could create a counting variable that kept increasing on every cycle, and once it hit a certain point
   // high point for slow, low point for fast, it would write to the next led
-
+  pixels.setPixelColor((lastPixel+1)%2,pixels.Color(0,0,0));
+  pixels.setPixelColor(lastPixel,pixels.Color(red,green,blue));
+  pixels.show();
+  lastPixel = (lastPixel + 1) % NUMPIXELS;
+  delay(1000);
 }
