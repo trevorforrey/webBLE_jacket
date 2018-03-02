@@ -16,7 +16,7 @@ Adafruit_GPS GPS(&GPSSerial);
 
 // Neopixel Defines
 #define NEOPIN  6
-#define NUMPIXELS 2 
+#define NUMPIXELS 3 
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, NEOPIN, NEO_GRB + NEO_KHZ800);
 
@@ -27,8 +27,11 @@ uint32_t timer = millis();
   int red = 0;
   int blue = 0;
   int green = 50;
+  // bus size
+  int busSize = 2;
   //last pixel written to
-  int lastPixel = 0;
+  int lastHead = NUMPIXELS - 1;
+  int lastTail = lastHead - busSize;
 
 void setup()
 {
@@ -131,9 +134,10 @@ void loop() // run over and over again
   // Delay writing to next color based on current speed (high speed = low delay)
   // instead of delaying the whole execution, I could create a counting variable that kept increasing on every cycle, and once it hit a certain point
   // high point for slow, low point for fast, it would write to the next led
-  pixels.setPixelColor((lastPixel+1)%2,pixels.Color(0,0,0));
-  pixels.setPixelColor(lastPixel,pixels.Color(red,green,blue));
+  pixels.setPixelColor(lastTail,pixels.Color(0,0,0));
+  pixels.setPixelColor(lastHead,pixels.Color(red,green,blue));
   pixels.show();
-  lastPixel = (lastPixel + 1) % NUMPIXELS;
-  delay(1000);
+  lastHead = (lastHead + 1) % NUMPIXELS;
+  lastTail = (lastTail + 1) % NUMPIXELS;
+  delay(250);
 }
