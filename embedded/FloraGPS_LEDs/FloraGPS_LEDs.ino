@@ -1,9 +1,9 @@
-#include <Adafruit_NeoPixel.h>
+#include <Adafruit_NeoPixel.h> // NeoPixel
 #ifdef __AVR__
   #include <avr/power.h>
 #endif
-
-#include <Adafruit_GPS.h>
+#include <Adafruit_GPS.h> // GPS
+#include <Wire.h> // for I2C communication
 
 #define GPSSerial Serial1
 
@@ -16,9 +16,11 @@ Adafruit_GPS GPS(&GPSSerial);
 
 // Neopixel Defines
 #define NEOPIN  6
-#define NUMPIXELS 3 
+#define NUMPIXELS 3
+#define ONBOARDLED 8 
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, NEOPIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel onboardled = Adafruit_NeoPixel(1, ONBOARDLED, NEO_GRB + NEO_KHZ800);
 
 uint32_t timer = millis();
 
@@ -42,7 +44,6 @@ void setup()
   // connect at 115200 so we can read the GPS fast enough and echo without dropping chars
   // also spit it out
   Serial.begin(115200);
-  Serial.println("Adafruit GPS library basic test!");
      
   // 9600 NMEA is the default baud rate for Adafruit MTK GPS's- some use 4800
   GPS.begin(9600);
@@ -68,17 +69,24 @@ void setup()
 
   ///////////////////////// LED NEOPIXEL SETUP /////////////////////////
   pixels.begin(); // inits neopixel library
+  onboardled.begin();
 
 
   ///////////////////////// I2C or USB w/ Ble Feather SETUP /////////////////////////
+  Wire.begin(9); // Start I2C slave on address 9
+  Wire.onReceive(updateColor);
+}
 
-
+void updateColor(int bytes) {
+  int i2cmessage = Wire.read();
+  Serial.print("From i2c: ");
+  Serial.println(i2cmessage);  
 }
 
 void loop() // run over and over again
 {
   ///////////////////////// Get New Color (if new color set) from BLE Feather /////////////////////////
-
+  
 
 
 

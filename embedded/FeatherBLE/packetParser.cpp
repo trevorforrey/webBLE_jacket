@@ -99,7 +99,7 @@ uint8_t readPacket(Adafruit_BLE *ble, uint16_t timeout)
 
     while (ble->available()) {
       char c =  ble->read();
-      Serial.print(c);
+//      Serial.print(c);
       if (c == '!') {
         replyidx = 0;
       }
@@ -107,7 +107,7 @@ uint8_t readPacket(Adafruit_BLE *ble, uint16_t timeout)
       replyidx++;
       timeout = origtimeout;
     }
-    Serial.print("\n");
+//    Serial.print("\n");
     
     if (timeout == 0) break;
     delay(1);

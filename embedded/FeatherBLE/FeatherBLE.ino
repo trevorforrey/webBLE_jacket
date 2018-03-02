@@ -19,6 +19,7 @@
 
 #include <Arduino.h>
 #include <SPI.h>
+#include <Wire.h>
 #include "Adafruit_BLE.h"
 #include "Adafruit_BluefruitLE_SPI.h"
 #include "Adafruit_BluefruitLE_UART.h"
@@ -139,6 +140,9 @@ void setup(void)
   ble.setMode(BLUEFRUIT_MODE_DATA);
 
   Serial.println();
+
+  Wire.begin();
+  Serial.print("Began i2c master side");
 }
 
 void loop(void)
@@ -168,6 +172,12 @@ void loop(void)
     Serial.print(green, HEX);
     if (blue < 0x10) Serial.print("0");
     Serial.println(blue, HEX);
+    Serial.print("about to send: ");
+    Serial.println(red);
+    Wire.beginTransmission(9); // begin transmit on address 9
+    Wire.write(red);
+    Wire.endTransmission();
+    Serial.print("sent: " + red);
   }  
 
 
