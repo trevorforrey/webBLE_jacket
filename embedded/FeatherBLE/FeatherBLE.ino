@@ -34,7 +34,7 @@ void error(const __FlashStringHelper*err) {
 }
 
 // function prototypes over in packetparser.cpp
-uint8_t readPacket(Adafruit_BLE *ble, uint16_t timeout);
+uint8_t readPacket(Adafruit_BLE *ble, uint8_t mypacket[], uint16_t timeout);
 float parsefloat(uint8_t *buffer);
 void printHex(const uint8_t * data, const uint32_t numBytes);
 
@@ -137,24 +137,28 @@ void setup(void)
 
 void loop(void)
 {
+  uint8_t mypacket[20];
   /* Wait for new data to arrive */
-  uint8_t len = readPacket(&ble, BLE_READPACKET_TIMEOUT);
+  uint8_t len = readPacket(&ble, mypacket, BLE_READPACKET_TIMEOUT);
   if (len == 0) return;
 
   Serial.print("Got a packet!");
 
-  /* Got a packet! */
-  printHex(packetbuffer, len);
+//  /* Got a packet! */
+//  printHex(packetbuffer, len);
 
   for (int i = 0; i < len; i++) {
-    Serial.print(packetbuffer[i]);
+    Serial.print("index ");
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.print(mypacket[i]);
   }
 
   // Color
-  if (packetbuffer[1] == 'C') {
-    uint8_t red = packetbuffer[2];
-    uint8_t green = packetbuffer[3];
-    uint8_t blue = packetbuffer[4];
+  if (mypacket[1] == 1) {
+    uint8_t red = mypacket[2];
+    uint8_t green = mypacket[3];
+    uint8_t blue = mypacket[4];
     Serial.print ("RGB #");
     if (red < 0x10) Serial.print("0");
     Serial.print(red, HEX);

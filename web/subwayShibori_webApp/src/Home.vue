@@ -6,15 +6,15 @@
 </template>
 
 <script>
+import {eventBus} from './main.js';
 export default {
-  import {eventBus} from './main.js';
   data () {
     return {
       colorService: '0x1234',
       colorWriteCharacteristic: '0x002',
       jacket: {},
       writeService: '6e400001-b5a3-f393-e0a9-e50e24dcca9e',
-      writeCharacteristic: '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+      writeCharacteristic: '6e400002-b5a3-f393-e0a9-e50e24dcca9e',
       colorWriteCharRef: 'nothing'
     }
   },
@@ -35,6 +35,7 @@ export default {
         console.log("device name is: "  + device.name);
         this.jacket = device;
         this.jacket.addEventListener('gattserverdisconnected', this.disconnected);
+        return device.gatt.connect();
       })
       .then(server => {
         return server.getPrimaryService(this.writeService);
