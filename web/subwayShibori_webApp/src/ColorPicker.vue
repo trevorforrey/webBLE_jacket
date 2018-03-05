@@ -18,9 +18,7 @@ export default {
     return {
       colorService: '0x1234',
       colorWriteCharacteristic: '0x002',
-      jacket: {},
-      colorWriteCharRef: 'nothing',
-      newColor: 'blue'
+      colorWriteCharRef: 'nothing'
     }
   },
   mounted() {
@@ -35,10 +33,10 @@ export default {
       console.log('sending color to ble feather');
       let colorPacket = new Uint8Array(6);
       colorPacket[0] = '40';
-      colorPacket[1] = '1';
-      colorPacket[2] = '255';
-      colorPacket[3] = '30';
-      colorPacket[4] = '140';
+      colorPacket[1] = '1'; // 1 = Color Command
+      colorPacket[2] = '255'; // Red Color Value
+      colorPacket[3] = '30'; // Green Color Value
+      colorPacket[4] = '140'; // Blue Color Value
       this.colorWriteCharRef.writeValue(colorPacket);
       return;
     }
