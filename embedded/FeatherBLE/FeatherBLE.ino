@@ -82,7 +82,7 @@ int32_t colorCharId;
 /**************************************************************************/
 void setup(void)
 {
-  while (!Serial); // required for Flora & Micro
+//  while (!Serial); // required for Flora & Micro
   delay(500);
 
   boolean success;

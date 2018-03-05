@@ -125,7 +125,9 @@ void loop() // run over and over again
     Serial.print("Green: ");
     Serial.println(mydata.green);  
     Serial.print("Blue: ");
-    Serial.println(mydata.blue);  
+    Serial.println(mydata.blue);
+    onboardled.setPixelColor(0,onboardled.Color(mydata.red,mydata.green,mydata.blue));
+    onboardled.show();  
   }
   
   ///////////////////////// Get GPS Data (location, speed) /////////////////////////
