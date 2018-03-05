@@ -1,22 +1,3 @@
-/*********************************************************************
- This is an example for our nRF51822 based Bluefruit LE modules
-
- Pick one up today in the adafruit shop!
-
- Adafruit invests time and resources providing this open source code,
- please support Adafruit and open-source hardware by purchasing
- products from Adafruit!
-
- MIT license, check LICENSE for more information
- All text above, and the splash screen below must be included in
- any redistribution
-*********************************************************************/
-
-/*
-    Please note the long strings of data sent mean the *RTS* pin is
-    required with UART to slow down data sent to the Bluefruit LE!
-*/
-
 #include <Arduino.h>
 #include <SPI.h>
 #include <Wire.h>
@@ -61,25 +42,10 @@ void printHex(const uint8_t * data, const uint32_t numBytes);
 extern uint8_t packetbuffer[];
 
 /* The service information */
-
 int32_t colorServiceId;
 int32_t colorCharId;
 
-/* Defining struct for sending color data to Flora */
-//struct colorData {
-//  uint8_t red;
-//  uint8_t green;
-//  uint8_t blue;  
-//};
-//typedef struct colorData ColorData;
-//ColorData colori2cPacket; // declare one ColorData struct
 
-/**************************************************************************/
-/*!
-    @brief  Sets up the HW an the BLE module (this function is called
-            automatically on startup)
-*/
-/**************************************************************************/
 void setup(void)
 {
 //  while (!Serial); // required for Flora & Micro
@@ -196,12 +162,6 @@ void loop(void)
     Serial.print(green, HEX);
     if (blue < 0x10) Serial.print("0");
     Serial.println(blue, HEX);
-//    Serial.print("about to send: ");
-//    Serial.println(red);
-//    Wire.beginTransmission(9); // begin transmit on address 9
-//    Wire.write(red);
-//    Wire.endTransmission();
-//    Serial.print("sent: " + red);
 
     mydata.red = red;
     mydata.green = green;
@@ -211,12 +171,6 @@ void loop(void)
     Serial.println(mydata.red);
     Serial.println(mydata.green);
     Serial.println(mydata.blue);
-//    Serial.print("of size: ");
-//    Serial.println(sizeof(ColorData));
-//    Wire.beginTransmission(9); // begin transmit on address 9
-//    Wire.write(colori2cPacket,sizeof(ColorData));
-//    Wire.endTransmission();
-//    Serial.print("sent: " + colori2cPacket);
     ET.sendData(I2C_SLAVE_ADDRESS);
   }  
 

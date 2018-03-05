@@ -38,20 +38,11 @@ Adafruit_NeoPixel onboardled = Adafruit_NeoPixel(1, ONBOARDLED, NEO_GRB + NEO_KH
 
 uint32_t timer = millis();
 
-/* Defining struct for receiving color data from Feather */
-//struct colorData {
-//  int red;
-//  int green;
-//  int blue;  
-//};
-//typedef struct colorData ColorData;
-//ColorData colori2cPacket; // declare one ColorData struct
-
 ///////////////////////// Main Variable SETUP /////////////////////////
   //color of leds
-  int red = 0;
+  int red = 50;
   int blue = 0;
-  int green = 50;
+  int green = 0;
   // bus size
   int busSize = 2;
   //last pixel written to
@@ -97,20 +88,8 @@ void setup()
 
   ///////////////////////// I2C or USB w/ Ble Feather SETUP /////////////////////////
   Wire.begin(I2C_SLAVE_ADDRESS); // Start I2C slave on address 9
-//  Wire.onReceive(updateColor);
   ET.begin(details(mydata),&Wire);
   Wire.onReceive(receive);
-
-}
-
-void updateColor(int bytes) {
-//  colori2cPacket = Wire.read();
-//  Serial.print("red: "); 
-//  Serial.println(colori2cPacket.red); 
-//  Serial.print("green: "); 
-//  Serial.println(colori2cPacket.green); 
-//  Serial.print("blue: "); 
-//  Serial.println(colori2cPacket.blue); 
 }
 
 void receive(int numBytes) {}
@@ -127,7 +106,10 @@ void loop() // run over and over again
     Serial.print("Blue: ");
     Serial.println(mydata.blue);
     onboardled.setPixelColor(0,onboardled.Color(mydata.red,mydata.green,mydata.blue));
-    onboardled.show();  
+    onboardled.show();
+    red = mydata.red;
+    green = mydata.green;
+    blue = mydata.blue;  
   }
   
   ///////////////////////// Get GPS Data (location, speed) /////////////////////////
