@@ -4,6 +4,20 @@
 #endif
 #include <Adafruit_GPS.h> // GPS
 #include <Wire.h> // for I2C communication
+#include <EasyTransferI2C.h>
+         
+EasyTransferI2C ET; 
+
+struct RECEIVE_DATA_STRUCTURE{
+  uint8_t red;
+  uint8_t green;
+  uint8_t blue; 
+};
+
+RECEIVE_DATA_STRUCTURE mydata;
+
+#define I2C_SLAVE_ADDRESS 9
+
 
 #define GPSSerial Serial1
 
@@ -25,13 +39,13 @@ Adafruit_NeoPixel onboardled = Adafruit_NeoPixel(1, ONBOARDLED, NEO_GRB + NEO_KH
 uint32_t timer = millis();
 
 /* Defining struct for receiving color data from Feather */
-struct colorData {
-  int red;
-  int green;
-  int blue;  
-};
-typedef struct colorData ColorData;
-ColorData colori2cPacket; // declare one ColorData struct
+//struct colorData {
+//  int red;
+//  int green;
+//  int blue;  
+//};
+//typedef struct colorData ColorData;
+//ColorData colori2cPacket; // declare one ColorData struct
 
 ///////////////////////// Main Variable SETUP /////////////////////////
   //color of leds
@@ -82,28 +96,37 @@ void setup()
 
 
   ///////////////////////// I2C or USB w/ Ble Feather SETUP /////////////////////////
-  Wire.begin(9); // Start I2C slave on address 9
-  Wire.onReceive(updateColor);
+  Wire.begin(I2C_SLAVE_ADDRESS); // Start I2C slave on address 9
+//  Wire.onReceive(updateColor);
+  ET.begin(details(mydata),&Wire);
+  Wire.onReceive(receive);
+
 }
 
 void updateColor(int bytes) {
-  colori2cPacket = Wire.read();
-  Serial.print("red: "); 
-  Serial.println(colori2cPacket.red); 
-  Serial.print("green: "); 
-  Serial.println(colori2cPacket.green); 
-  Serial.print("blue: "); 
-  Serial.println(colori2cPacket.blue); 
+//  colori2cPacket = Wire.read();
+//  Serial.print("red: "); 
+//  Serial.println(colori2cPacket.red); 
+//  Serial.print("green: "); 
+//  Serial.println(colori2cPacket.green); 
+//  Serial.print("blue: "); 
+//  Serial.println(colori2cPacket.blue); 
 }
+
+void receive(int numBytes) {}
 
 void loop() // run over and over again
 {
   ///////////////////////// Get New Color (if new color set) from BLE Feather /////////////////////////
-  
-
-
-
-
+  if (ET.receiveData()) {
+    Serial.println("Received data from feather");
+    Serial.print("Red: ");
+    Serial.println(mydata.red);  
+    Serial.print("Green: ");
+    Serial.println(mydata.green);  
+    Serial.print("Blue: ");
+    Serial.println(mydata.blue);  
+  }
   
   ///////////////////////// Get GPS Data (location, speed) /////////////////////////
   // if gps fix is lost, use last speed used

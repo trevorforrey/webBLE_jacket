@@ -20,6 +20,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <Wire.h>
+#include <EasyTransferI2C.h>
 #include "Adafruit_BLE.h"
 #include "Adafruit_BluefruitLE_SPI.h"
 #include "Adafruit_BluefruitLE_UART.h"
@@ -29,6 +30,18 @@
 #if SOFTWARE_SERIAL_AVAILABLE
   #include <SoftwareSerial.h>
 #endif
+
+EasyTransferI2C ET;
+
+struct SEND_DATA_STRUCTURE{
+  uint8_t red;
+  uint8_t green;
+  uint8_t blue; 
+};
+
+SEND_DATA_STRUCTURE mydata;
+
+#define I2C_SLAVE_ADDRESS 9
 
 /* ...hardware SPI, using SCK/MOSI/MISO hardware SPI pins and then user selected CS/IRQ/RST */
 Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
@@ -53,13 +66,13 @@ int32_t colorServiceId;
 int32_t colorCharId;
 
 /* Defining struct for sending color data to Flora */
-struct colorData {
-  uint8_t red;
-  uint8_t green;
-  uint8_t blue;  
-};
-typedef struct colorData ColorData;
-ColorData colori2cPacket; // declare one ColorData struct
+//struct colorData {
+//  uint8_t red;
+//  uint8_t green;
+//  uint8_t blue;  
+//};
+//typedef struct colorData ColorData;
+//ColorData colori2cPacket; // declare one ColorData struct
 
 /**************************************************************************/
 /*!
@@ -152,6 +165,7 @@ void setup(void)
   Serial.println();
 
   Wire.begin();
+  ET.begin(details(mydata),&Wire);
   Serial.print("Began i2c master side");
 }
 
@@ -189,20 +203,21 @@ void loop(void)
 //    Wire.endTransmission();
 //    Serial.print("sent: " + red);
 
-    colori2cPacket.red = red;
-    colori2cPacket.green = green;
-    colori2cPacket.blue = blue;
+    mydata.red = red;
+    mydata.green = green;
+    mydata.blue = blue;
 
     Serial.print("about to send: ");
-    Serial.println(colori2cPacket.red);
-    Serial.println(colori2cPacket.green);
-    Serial.println(colori2cPacket.blue);
-    Serial.print("of size: ");
-    Serial.println(sizeof(ColorData));
-    Wire.beginTransmission(9); // begin transmit on address 9
-    Wire.write(colori2cPacket,sizeof(ColorData));
-    Wire.endTransmission();
-    Serial.print("sent: " + colori2cPacket);
+    Serial.println(mydata.red);
+    Serial.println(mydata.green);
+    Serial.println(mydata.blue);
+//    Serial.print("of size: ");
+//    Serial.println(sizeof(ColorData));
+//    Wire.beginTransmission(9); // begin transmit on address 9
+//    Wire.write(colori2cPacket,sizeof(ColorData));
+//    Wire.endTransmission();
+//    Serial.print("sent: " + colori2cPacket);
+    ET.sendData(I2C_SLAVE_ADDRESS);
   }  
 
 
