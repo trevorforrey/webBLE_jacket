@@ -1,5 +1,7 @@
 # webBLE_jacket
 
+![alt text](https://trevorforrey.github.io/portfolio/assets/img/subwayShibori/gallery_shot.JPG)
+
 Code for the fashion + tech project: Subway Shibori. A jacket that speeds up lights sewn into garment based on user's current speed. Web bluetooth app allows for changing of LED colors.
 
 Video of LED subway: https://www.youtube.com/watch?v=nRnUgiD-eZY
